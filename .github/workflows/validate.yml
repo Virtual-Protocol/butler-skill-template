@@ -1,15 +1,11 @@
 name: validate
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with: { python-version: "3.11" }
-      - name: Fetch the hub validator
-        run: git clone --depth 1 https://github.com/Virtual-Protocol/butler-skills /tmp/butler-skills
-      - name: Validate this skill
-        run: python3 /tmp/butler-skills/scripts/validate.py --standalone .
-      - name: Offline replay of duty.py (if present)
-        run: test -f duty.py && python3 /tmp/butler-skills/tests/replay.py --standalone . --fixture trade-activity-page || echo "no duty.py"
+      # Checks out this repo, fetches the hub's validator + offline replay harness and
+      # runs both (inputs: path, default "."; standalone, default "true").
+      - uses: Virtual-Protocol/butler-skills/.github/actions/validate@main

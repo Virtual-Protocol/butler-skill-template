@@ -7,7 +7,10 @@ metadata: {"openclaw":{"emoji":"TODO","requires":{"bins":["bevo-read"]}},"bevo":
 
 ## When to use
 
-TODO: the one sentence a Butler reads to decide this skill applies.
+TODO: the one sentence a Butler reads to decide this skill applies. Everywhere below, write only
+the delta over what the container already teaches (AGENTS.md and the bundled skills): never
+restate command grammar, safety invariants, budgets or routing — if you must point at one,
+cite the AGENTS.md section.
 
 ## Before you start
 
@@ -33,11 +36,14 @@ call, and what to say about pending -> arm -> pocket.
 
 ## Idempotency and retries
 
-TODO: only required when `moneyMoving:true`. Key formula, what to do on `accepted`, on a
-network error, on `IDEMPOTENT_IN_FLIGHT`, `IDEMPOTENCY_KEY_REUSED`, `IDEMPOTENT_UNKNOWN_OUTCOME`.
+TODO: only required when `moneyMoving:true`. The key formula (from the source event id, never a
+timestamp) plus one sentence — "any error or uncertainty: `bevo-read request <key>` first — do
+not re-run". Do not list the 409 codes; the shim and AGENTS.md's money rule handle them.
 Must contain the phrase: do not re-run.
 
 ## Failure handling
+
+TODO: only the rows specific to this skill — not the generic idempotency / 4xx / pocket rows.
 
 | Outcome | What to do |
 | --- | --- |
@@ -45,7 +51,7 @@ Must contain the phrase: do not re-run.
 
 ## Limits
 
-TODO: what this skill will not do.
+TODO: what this skill will not do — its own scope only, never the container's global rules.
 
 ## Say to the owner
 

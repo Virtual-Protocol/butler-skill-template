@@ -2,7 +2,7 @@
 name: _template
 description: TODO one-sentence trigger description, start with the phrases an owner would say, <=160 chars
 version: 0.1.0
-metadata: {"openclaw":{"emoji":"TODO","requires":{"bins":["bevo-read"]}},"bevo":{"tier":"on-demand","modes":["one-off"],"moneyMoving":false,"keywords":["TODO"],"requires":{"routes":["GET /butler-read/TODO"],"features":[],"gates":[],"bins":["bevo-read"]},"params":[{"name":"TODO_PARAM","type":"string","required":true,"ask":"TODO ask phrase"}]}}
+metadata: {"openclaw":{"emoji":"TODO","requires":{"bins":["bevo-read"]}},"butler":{"tier":"on-demand","modes":["one-off"],"moneyMoving":false,"keywords":["TODO"],"requires":{"routes":["GET /butler-read/TODO"],"features":[],"gates":[],"bins":["bevo-read"]},"params":[{"name":"TODO_PARAM","type":"string","required":true,"ask":"TODO ask phrase"}]}}
 ---
 
 ## When to use
@@ -21,6 +21,13 @@ TODO: reads/ids to resolve before doing anything (e.g. `bevo-read user <@handle>
 TODO: walk through each `params` entry — what it changes, its default, its range, and which
 numbered steps below are `[FIXED]` vs `[ADAPT]` because of it.
 
+TODO: then close this section with the fork seam. Knobs cover the asks you anticipated; a
+Butler will meet the ones you did not. Say what would call for a fork rather than a knob,
+where in `duty.py` such a condition goes, and which read feeds it — `bevo-hub fork <name>`
+makes the owner's own copy, the hub never overwrites it, and `bevo-automation create
+--from-skill <the-fork>` files it like any other. A skill whose steps only make sense at its
+own defaults is one nobody can extend.
+
 ## One-off procedure
 
 1. [FIXED] TODO first fixed step (a read).
@@ -28,7 +35,7 @@ numbered steps below are `[FIXED]` vs `[ADAPT]` because of it.
 
 ## Duty procedure
 
-TODO: trigger JSON, env mapping from params, the exact `bevo-automation create --from-skill _template@0.1.0 '<json>'`
+TODO: trigger JSON, env mapping from params, the exact `bevo-automation create --from-skill <name> '<json>'`
 call, and what to say about pending -> arm -> pocket.
 
 1. [FIXED] TODO

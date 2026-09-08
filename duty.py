@@ -6,60 +6,34 @@ Conventions (enforced by scripts/validate.py):
     declared defaults.
   - Every bevo.trade(...)/bevo.execute(...) call passes idempotency_key=
     derived from the source event id and bevo.SERVICE_ID.
-  - Keep a bounded state.json seen-set in cwd (belt: server ledger, braces:
-    local state).
   - No bare `except: pass`, no subprocess/os.system/eval/exec.
+
+Prefer the TYPED generators — bevo.trades(), bevo.messages(), bevo.transfers(),
+bevo.ticks(), bevo.polls(), bevo.webhooks(), bevo.frames() — over the raw
+bevo.events(), which is there for a kind they do not cover. `bevo.state` is a
+dict that saves itself across restarts, so a duty needs no state file of its
+own; the idempotency key is what stops a replayed event acting twice.
 """
-import json
 import os
 
 import bevo
-
-STATE_PATH = "state.json"
-MAX_SEEN = 2000
 
 # TODO: read your declared params with their defaults, e.g.:
 # TODO_PARAM = os.environ.get("TODO_PARAM", "default-value")
 
 
-def load_state() -> dict:
-    if os.path.exists(STATE_PATH):
-        with open(STATE_PATH) as f:
-            return json.load(f)
-    return {"handled": []}
-
-
-def save_state(state: dict) -> None:
-    handled = state.get("handled", [])[-MAX_SEEN:]
-    state["handled"] = handled
-    tmp = STATE_PATH + ".tmp"
-    with open(tmp, "w") as f:
-        json.dump(state, f)
-    os.replace(tmp, STATE_PATH)
-
-
 def main() -> None:
-    state = load_state()
-    handled = set(state.get("handled", []))
+    # TODO: swap bevo.trades() for the generator matching your trigger kind.
+    for trade in bevo.trades():
+        # One key per SOURCE EVENT, never a timestamp: the pump can replay a
+        # row it already handed over after a restart, and the same key answers
+        # "already filed" instead of acting a second time.
+        key = f"TODO-skill:{bevo.SERVICE_ID}:{trade.id}"
 
-    for ev in bevo.events():
-        # TODO: filter to the event kind(s) this duty cares about.
-        kind = ev.get("kind")
-        if kind != "TODO":
-            continue
-
-        event = ev.get("event", {})
-        event_id = event.get("id")
-        if event_id is None or event_id in handled:
-            continue
-
-        # TODO: build the idempotency key and call bevo.trade / bevo.execute.
-        key = f"_template:{bevo.SERVICE_ID}:{event_id}"
-        bevo.log(f"TODO handling event {event_id} with key {key}")
-
-        handled.add(event_id)
-        state["handled"] = list(handled)
-        save_state(state)
+        # TODO: skip what the owner's knobs exclude, returning early — then
+        # act: bevo.buy / sell / long / short / close / stock_buy / stock_sell,
+        # or bevo.execute for a contract call. Each takes idempotency_key=key.
+        bevo.log(f"TODO handling {trade.id} with key {key}")
 
 
 if __name__ == "__main__":

@@ -25,7 +25,9 @@ TODO: then close this section with the fork seam. Knobs cover the asks you antic
 Butler will meet the ones you did not. Say what would call for a fork rather than a knob,
 where in `duty.py` such a condition goes, and which read feeds it — `bevo-hub fork <name>`
 makes the owner's own copy, the hub never overwrites it, and `bevo-automation create
---from-skill <the-fork>` files it like any other. A skill whose steps only make sense at its
+--from-skill <the-fork>` files it like any other. Any knob the forked code reads is a
+`params` entry in the fork's own frontmatter; an `env` key the skill never declared is
+refused at create. A skill whose steps only make sense at its
 own defaults is one nobody can extend.
 
 ## One-off procedure

@@ -39,9 +39,11 @@ CI runs the same two checks on every push through one step,
 
 ## Ship
 
-When it validates: tag `v1.0.0`, then open a PR to
+When it validates: open a PR to
 [Virtual-Protocol/butler-skills](https://github.com/Virtual-Protocol/butler-skills)
-adding your repo as a submodule under `skills/<name>` at that tag. Maintainers
-review the pinned commit; Butler containers clone exactly that commit. Names
-starting with `butler-` are reserved for the Butler team; names starting with
+adding one entry to `skills.json` — your `name`, your `repo` URL and a `ref`. The
+registry keeps no copy of your code and takes no submodule: every build shallow-clones
+your repo at that ref and publishes the commit it resolved to. A branch `ref` follows
+you, so each merge reaches butlers on the next build; a tag `ref` holds a release.
+Names starting with `butler-` are reserved for the Butler team; names starting with
 `bevo-` are refused (that prefix is the container's own bundled-skill namespace).
